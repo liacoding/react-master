@@ -2,7 +2,7 @@ const app = document.getElementById("app");
 
 let count = 0;
 
-function render() {
+function render() { // let's try to turn our DOM into a JS object (it's the same DOM but as a JS object)
   return {
     type: "div",
     props: {
@@ -32,8 +32,8 @@ function render() {
   };
 }
 
-
-function createDomNode(vnode) {
+ 
+function createDomNode(vnode) { // then based on out JS object representation of the DOM, we can create the real DOM 
   const dom = document.createElement(vnode.type);
 
   if (vnode.props.id) {
@@ -54,27 +54,27 @@ function createDomNode(vnode) {
   return dom;
 }
 
-let currentTree = render();
-let rootDom = createDomNode(currentTree);
-app.appendChild(rootDom);
+let currentTree = render(); // initial virtual DOM (JS object representation of the DOM)
+let rootDom = createDomNode(currentTree); // create the real DOM from the virtual DOM
+app.appendChild(rootDom); // mount the real DOM to the app
 
-document.getElementById("inc").addEventListener("click", () => {
+document.getElementById("inc").addEventListener("click", () => { // increment the count
   count = count + 1;
   updateApp();
 });
 
-document.getElementById("dec").addEventListener("click", () => {
+document.getElementById("dec").addEventListener("click", () => { // decrement the count
   count = count - 1;
   updateApp();
 });
 
-function updateApp() {
-  const newTree = render();
+function updateApp() { // Here happens all the magic. We compare old and new virtual DOMs and only update the parts that were changed.
+  const newTree = render(); // new virtual DOM (JS object representation of the DOM)
   
-  const oldText = currentTree.props.children[0].props.children;
-  const newText = newTree.props.children[0].props.children;
+  const oldText = currentTree.props.children[0].props.children; // old text content of the first child
+  const newText = newTree.props.children[0].props.children; // new text content of the first child
 
-  if (oldText !== newText) {
-    rootDom.children[0].textContent = newText;
+  if (oldText !== newText) { // if the text content is different, update the text content of the first child
+    rootDom.children[0].textContent = newText; // update the text content of the first child in the real DOM
   }
 }
