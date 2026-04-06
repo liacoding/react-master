@@ -2,17 +2,20 @@ const app = document.getElementById("app");
 
 let count = 0;
 
-function render() { // let's try to turn our DOM into a JS object (it's the same DOM but as a JS object)
+function Title(value) { // We separated the title element to its own function component 
+  return {
+    type: "h1",
+    props: {
+      children: `Count: ${value}`
+    }
+  };
+}
+
+function Controls() { // We separated the buttons element to its own function component 
   return {
     type: "div",
     props: {
       children: [
-        {
-          type: "h1",
-          props: {
-            children: `Count: ${count}`
-          }
-        },
         {
           type: "button",
           props: {
@@ -27,6 +30,18 @@ function render() { // let's try to turn our DOM into a JS object (it's the same
             children: "-"
           }
         }
+      ]
+    }
+  };
+}
+
+function render() { // We combined the components in render() function
+  return {
+    type: "div",
+    props: {
+      children: [
+        Title(count),
+        Controls()
       ]
     }
   };
