@@ -13,3 +13,5 @@
 // This becomes error-prone and hard to scale.
 
 // Try to observe these problems in the code in this folder.
+
+GOAL: of the lesson: to see why direct manual control of DOM is not convenient. 

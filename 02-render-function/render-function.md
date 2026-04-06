@@ -6,3 +6,4 @@ Now, let's think how we can solve this problem using JS.
 
 3) The idea is simple. We can insert HTML using JS. So we can just create all HTML we need, using a function and call it again whenever we update something. 
 
+GOAL: to implement render() function, make updates of the UI automatic if state (variable on the UI page) changes. 
