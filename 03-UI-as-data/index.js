@@ -33,30 +33,30 @@ function render() { // let's try to turn our DOM into a JS object (it's the same
 }
 
  
-function createDomNode(vnode) { // then based on out JS object representation of the DOM, we can create the real DOM 
-  const dom = document.createElement(vnode.type);
+function createRealDom(virtualDom) { // then based on out JS object representation of the DOM, we can create the real DOM 
+  const realDom = document.createElement(virtualDom.type);
 
-  if (vnode.props.id) {
-    dom.id = vnode.props.id;
+  if (virtualDom.props.id) {
+    realDom.id = virtualDom.props.id;
   }
 
-  if (typeof vnode.props.children === "string") {
-    dom.textContent = vnode.props.children;
+  if (typeof virtualDom.props.children === "string") {
+    realDom.textContent = virtualDom.props.children;
   }
 
-  if (Array.isArray(vnode.props.children)) {
-    vnode.props.children.forEach((child) => {
-      const childDom = createDomNode(child);
-      dom.appendChild(childDom);
+  if (Array.isArray(virtualDom.props.children)) {
+    virtualDom.props.children.forEach((child) => {
+      const childDom = createRealDom(child);
+      realDom.appendChild(childDom);
     });
   }
 
-  return dom;
+  return realDom;
 }
 
-let currentTree = render(); // initial virtual DOM (JS object representation of the DOM)
-let rootDom = createDomNode(currentTree); // create the real DOM from the virtual DOM
-app.appendChild(rootDom); // mount the real DOM to the app
+let currentVirtualDom = render(); // initial virtual DOM (JS object representation of the DOM)
+let realDom = createRealDom(currentTree); // create the real DOM from the virtual DOM
+app.appendChild(realDom); // mount the real DOM to the app
 
 document.getElementById("inc").addEventListener("click", () => { // increment the count
   count = count + 1;
@@ -69,14 +69,14 @@ document.getElementById("dec").addEventListener("click", () => { // decrement th
 });
 
 function updateApp() { // Here happens all the magic. We compare old and new virtual DOMs and only update the parts that were changed.
-  const newTree = render(); // new virtual DOM (JS object representation of the DOM)
+  const newVirtualDom = render(); // new virtual DOM (JS object representation of the DOM)
   
-  const oldText = currentTree.props.children[0].props.children; // old text content of the first child
-  const newText = newTree.props.children[0].props.children; // new text content of the first child
+  const oldText = currentVirtualDom.props.children[0].props.children; // old text content of the first child
+  const newText = newVirtualDom.props.children[0].props.children; // new text content of the first child
 
   if (oldText !== newText) { // if the text content is different, update the text content of the first child
-    rootDom.children[0].textContent = newText; // update the text content of the first child in the real DOM
+    realDom.children[0].textContent = newText; // update the text content of the first child in the real DOM
   }
 
-  currentTree = newTree;
+  currentVirtualDom = newVirtualDom;
 }
