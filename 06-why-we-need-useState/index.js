@@ -1,4 +1,9 @@
-import { useState, resetHookIndex, stateStore } from "./useState.js";
+import { useState, resetHookIndex } from "./useState.js";
+
+let setCountOfApples;
+let setCountOfBananas;
+let countOfApples;
+let countOfBananas;
 
 const app = document.getElementById("app");
 
@@ -39,8 +44,8 @@ function render() { // We combined the components in render() function
   resetHookIndex();
   const [nameOfApples] = useState("Apples");
   const [nameOfBananas] = useState("Bananas");
-  const [countOfApples] = useState(0);
-  const [countOfBananas] = useState(0);
+  [countOfApples, setCountOfApples] = useState(0);
+  [countOfBananas, setCountOfBananas] = useState(0);
 
   return {
     type: "div",
@@ -178,14 +183,14 @@ let realDom = createRealDom(currentVirtualDom); // create the real DOM from the 
 app.appendChild(realDom); // mount the real DOM to the app
 
 document.getElementById("inc").addEventListener("click", () => { // increment the count
-  stateStore[2] = stateStore[2] + 1;
-  stateStore[3] = stateStore[3] + 1;
+  setCountOfApples(countOfApples + 1);
+  setCountOfBananas(countOfBananas + 1);
   updateApp();
 });
 
 document.getElementById("dec").addEventListener("click", () => { // decrement the count
-  stateStore[2] = stateStore[2] - 1;
-  stateStore[3] = stateStore[3] - 1;
+  setCountOfApples(countOfApples - 1);
+  setCountOfBananas(countOfBananas - 1);
   updateApp();
 });
 
